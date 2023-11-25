@@ -1,15 +1,29 @@
 using CuaHangDoAn.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CuaHangDoAn.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<Db>(options =>
+builder.Services.AddDbContext<CuaHangDoAnContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectString"));
 
 });
+
+//builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<CuaHangDoAnContext>();
+
+//builder.Services.AddIdentity<AppUser, IdentityRole>().
+//    AddEntityFrameworkStores<Db>().
+//    AddDefaultTokenProviders();
+
+builder.Services.AddDefaultIdentity<AppUser>().
+    AddEntityFrameworkStores<CuaHangDoAnContext>().
+    AddDefaultTokenProviders();
+
 var app = builder.Build();
 
 
@@ -25,7 +39,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
@@ -37,6 +51,7 @@ app.UseEndpoints(endpoints =>
     app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapRazorPages();
 });
 
 

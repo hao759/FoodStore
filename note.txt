@@ -1,7 +1,20 @@
 ﻿dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.EntityFrameworkCore 
 EntityFrameworkCore.Design
+dotnet add package Microsoft.AspNetCore.Identity
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 
-
+Identily 6 ddi vs verrsion .net 6
 
 src="js     ../assets  thêm chỗ """"
+
+
+
+Thêm Iden, download 2 pack, DB:Identity<appuser>
+//đki program
+app.UseAuthentication();  
+builder.Services.AddDefaultIdentity<AppUser>().      //lucs gen ko co nay
+
+Some services are not able to be constructed		// nó tự sinh ra cái kế thừa identiContext  
+													//.maprazor vào
+//chỉnh cái DBContext
