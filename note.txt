@@ -9,6 +9,11 @@ Identily 6 ddi vs verrsion .net 6
 src="js     ../assets  thêm chỗ """"
 
 
+//===================================================================================================
+Ko scafodder dc controller xoa Microsoft.AspNetCore.Identity di
+//===================================================================================================
+
+
 
 Thêm Iden, download 2 pack, DB:Identity<appuser>
 //đki program
@@ -21,3 +26,28 @@ Some services are not able to be constructed		// nó tự sinh ra cái kế th�
 
 
 nullableNumber ??= defaultValue;    //nếu nullable bị null          != = nullableNumber ?? defaultValue
+
+//===================================================================================================
+
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+@section Script
+    {
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tablee').DataTable();
+        });
+    </script>
+}
+
+@RenderSection("Script", required: false)
+
+===============================================================================================
+@RenderSection("footer", required: false)
+
+@section footer
+{
+    <p>Test Section</p>
+}

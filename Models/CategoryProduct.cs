@@ -9,6 +9,6 @@ namespace CuaHangDoAn.Models
         public string Name { get; set; }
         //[Remote(action: "Validate", controller: "CategoryProducts", areaName: "Admin")]//AdditionalFields = "Password,RePassword", HttpMethod = "GET"
         public string Description { get; set; }
-        public ICollection<CategoryProduct>? Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
     }
 }

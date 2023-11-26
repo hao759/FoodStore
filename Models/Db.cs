@@ -14,7 +14,7 @@ namespace CuaHangDoAn.Models
     //    public DbSet<Product>? Products { get; set; }
     //    public DbSet<CategoryProduct> CategoryProducts { get; set; }
     //}
-    public class Db : IdentityDbContext<AppUser>
+    public class Db : DbContext
     {
         public Db(DbContextOptions opt) : base(opt)
         {
