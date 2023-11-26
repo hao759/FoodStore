@@ -18,3 +18,6 @@ builder.Services.AddDefaultIdentity<AppUser>().      //lucs gen ko co nay
 Some services are not able to be constructed		// nó tự sinh ra cái kế thừa identiContext  
 													//.maprazor vào
 //chỉnh cái DBContext
+
+
+nullableNumber ??= defaultValue;    //nếu nullable bị null          != = nullableNumber ?? defaultValue

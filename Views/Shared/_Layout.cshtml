@@ -119,7 +119,19 @@
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
+
+
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <p>Đã đăng nhập : @User.Identity.Name</p>
+                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                        <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <partial name="_LoginPartial.cshtml" />
+                                }
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Log in";
-    Layout = null;
 }
 <link rel="shortcut icon" type="image/png" href="~/AdminAsset/images/logos/favicon.png" />
 <link rel="stylesheet" href="~/AdminAsset/css/styles.min.css" />
@@ -32,10 +31,6 @@
                             <input type="text" class="form-control" asp-for="Input.Password" aria-describedby="emailHelp">
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
-                       @* <div class="mb-4">
-                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input required type="password" class="form-control" id="exampleInputPassword1">
-                        </div>*@
                         <div class="checkbox">
                             <label asp-for="Input.RememberMe" class="form-label">
                                 <input class="form-check-input" asp-for="Input.RememberMe" />
@@ -43,10 +38,7 @@
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign Up</button>
-                        <div class="d-flex align-items-center justify-content-center">
-                            <p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
-                            <a class="text-primary fw-bold ms-2" href="./authentication-login.html">Sign In</a>
-                        </div>
+                        
                     </form>
                     <div>
                         <p>
