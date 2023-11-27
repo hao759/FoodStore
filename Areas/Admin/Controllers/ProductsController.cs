@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CuaHangDoAn.Data;
 using CuaHangDoAn.Models;
 using Microsoft.Extensions.Hosting;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace CuaHangDoAn.Areas.Admin.Controllers
 {
@@ -16,10 +17,12 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
     {
         private readonly CuaHangDoAnContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
-        public ProductsController(CuaHangDoAnContext context, IWebHostEnvironment hostEnvironment)
+        public INotyfService _notifyService { get; }
+        public ProductsController(CuaHangDoAnContext context, IWebHostEnvironment hostEnvironment, INotyfService notifyService)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
+            _notifyService = notifyService;
         }
 
         // GET: Admin/Products
@@ -79,6 +82,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
 
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+                _notifyService.Success("Thêm sản phẩm thành công");
                 return RedirectToAction(nameof(Index));
             }
            
@@ -137,6 +141,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
 
                     _context.Update(product);
                     await _context.SaveChangesAsync();
+                    _notifyService.Success("Chỉnh sửa sản phẩm thành công");
                 }
                 catch (DbUpdateConcurrencyException)
                 {

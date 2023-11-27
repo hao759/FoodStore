@@ -5,11 +5,11 @@
 }
 
 <h1>Index</h1>
-
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="tablee" class="table">
     <thead>
         <tr>
             <th>
@@ -45,3 +45,13 @@
 }
     </tbody>
 </table>
+@section Script
+    {
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tablee').DataTable();
+        });
+    </script>
+}

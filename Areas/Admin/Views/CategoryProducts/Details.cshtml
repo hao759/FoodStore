@@ -24,7 +24,7 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="row col-md-6">
+    <a class="btn btn-primary col-md-2" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+    <a class="btn btn-secondary col-3 offset-2" asp-action="Index">Back to List</a>
 </div>
