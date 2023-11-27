@@ -160,5 +160,11 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
         {
           return (_context.CategoryProducts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        public IActionResult Validate(string Description) {
+            if (Description.Length == 2)
+                return Json(data: "Bằng 2");
+            return Json(true);
+        }
     }
 }

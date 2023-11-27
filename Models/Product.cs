@@ -17,7 +17,7 @@ namespace CuaHangDoAn.Models
 
         public string? Image { get; set; }
         [NotMapped]
-        [DisplayName("Upload File")]
+        [DisplayName("Ảnh sản phẩm")]
         public IFormFile? ImageFile { get; set; }
 
 

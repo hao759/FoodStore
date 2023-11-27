@@ -67,7 +67,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             {
                 string wwwRootPath = _hostEnvironment.WebRootPath;
                 string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
-                string extension = Path.GetExtension(product.ImageFile.FileName);
+                string extension = Path.GetExtension(product.ImageFile.FileName);               
                 product.Image = fileName+ DateTime.Now.ToString("yymmssfff") + extension;
                 string path = Path.Combine(wwwRootPath + "/Image/", product.Image);//thíu extension tên file thíu .png
                 //product.Description = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
@@ -107,7 +107,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CateID")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CateID,ImageFile,Image")] Product product)
         {
             if (id != product.Id)
             {
@@ -118,6 +118,23 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             {
                 try
                 {
+                    if(product.ImageFile != null)
+                    {
+                        string wwwRootPath = _hostEnvironment.WebRootPath;
+                        System.IO.File.Delete(wwwRootPath + "/Image/" + product.Image);
+
+                        string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                        string extension = Path.GetExtension(product.ImageFile.FileName);
+                        product.Image = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                        string path = Path.Combine(wwwRootPath + "/Image/", product.Image);//thíu extension tên file thíu .png
+                                                                                           //product.Description = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                       
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await product.ImageFile.CopyToAsync(fileStream);
+                        }
+                    }
+
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
@@ -160,7 +177,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
         // POST: Admin/Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id,string Image)
         {
             if (_context.Products == null)
             {
@@ -169,6 +186,10 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             var product = await _context.Products.FindAsync(id);
             if (product != null)
             {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string path = Path.Combine(wwwRootPath + "/Image/", Image);//thíu extension tên file thíu .png
+
+                System.IO.File.Delete(path);
                 _context.Products.Remove(product);
             }
             
