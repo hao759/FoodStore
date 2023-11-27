@@ -24,7 +24,7 @@
             @Html.DisplayFor(model => model.CategoryProduct.Id)
         </dd>
     </dl>
-    
+    <img class="mt-4" src="@($"/Image/{Model.Image}")" style="width: 200px; height: 130px;" />
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |

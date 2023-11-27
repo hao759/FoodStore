@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CuaHangDoAn.Data;
 using CuaHangDoAn.Models;
+using Microsoft.Extensions.Hosting;
 
 namespace CuaHangDoAn.Areas.Admin.Controllers
 {
@@ -14,10 +15,11 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly CuaHangDoAnContext _context;
-
-        public ProductsController(CuaHangDoAnContext context)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        public ProductsController(CuaHangDoAnContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
 
         // GET: Admin/Products
@@ -49,7 +51,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
-            ViewData["CateID"] = new SelectList(_context.CategoryProducts, "Id", "Id");
+            ViewData["CateID"] = new SelectList(_context.CategoryProducts, "Id", "Name");
             return View();
         }
 
@@ -58,15 +60,28 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CateID")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,CateID,ImageFile")] Product product)
         {
+            ViewData["CateID"] = new SelectList(_context.CategoryProducts, "Id", "Name", product.CateID);
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                string extension = Path.GetExtension(product.ImageFile.FileName);
+                product.Image = fileName+ DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRootPath + "/Image/", product.Image);//thíu extension tên file thíu .png
+                //product.Description = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await product.ImageFile.CopyToAsync(fileStream);
+                }
+                
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CateID"] = new SelectList(_context.CategoryProducts, "Id", "Id", product.CateID);
+           
             return View(product);
         }
 
@@ -83,7 +98,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["CateID"] = new SelectList(_context.CategoryProducts, "Id", "Id", product.CateID);
+            ViewData["CateID"] = new SelectList(_context.CategoryProducts, "Id", "Name", product.CateID);
             return View(product);
         }
 
@@ -119,7 +134,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CateID"] = new SelectList(_context.CategoryProducts, "Id", "Id", product.CateID);
+            ViewData["CateID"] = new SelectList(_context.CategoryProducts, "Id", "Name", product.CateID);
             return View(product);
         }
 

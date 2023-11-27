@@ -16,7 +16,10 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryProduct)
+                @Html.DisplayNameFor(model => model.CategoryProduct.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th></th>
         </tr>
@@ -28,8 +31,11 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryProduct.Id)
+                @Html.DisplayFor(modelItem => item.CategoryProduct.Name)
             </td>
+                <td>
+                    <img class="mt-4" src="@($"/Image/{item.Image}")" style="width: 200px; height: 130px;" />
+                </td>
             <td>
                     <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id">Details</a>
