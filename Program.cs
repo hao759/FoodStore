@@ -1,10 +1,21 @@
-using CuaHangDoAn.Models;
+﻿using CuaHangDoAn.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CuaHangDoAn.Data;
 using AspNetCoreHero.ToastNotification;
+using CuaHangDoAn.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddOptions();                                        // Kích hoạt Options
+//var mailsettings = builder.Configuration.GetSection("MailSettings");  // đọc config
+//builder.Services.Configure<MailSettings>(mailsettings);               // đăng ký để Inject
+
+builder.Services.AddTransient<IEmailSender, SendMailService>();        // Đăng ký dịch vụ Mail
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
