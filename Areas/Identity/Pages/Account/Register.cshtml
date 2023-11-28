@@ -5,7 +5,7 @@
 }
 
 
-<!doctype html>
+
 <html lang="en">
 
 <head>
@@ -54,6 +54,16 @@
                                         <a class="text-primary fw-bold ms-2" asp-controller="Account" asp-action="Login">Sign In</a>
                                     </div>
                                 </form>
+                                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                    <div>
+                                        <p>
+                                            @foreach (var provider in Model.ExternalLogins!)
+                                            {
+                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                            }
+                                        </p>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -95,15 +105,15 @@
             </div>
         </div>
 
-        //===========
        
     </div>
     <script src="~/AdminAsset/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/AdminAsset/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
 </body>
 
 </html>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+

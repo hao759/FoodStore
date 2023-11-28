@@ -21,6 +21,27 @@ builder.Services.ConfigureApplicationCookie(opt =>   //ko caanf?
     opt.LogoutPath = "/Identity/Account/Logout";
     opt.AccessDeniedPath = "/";
 });
+//==================================LoginGoogle=========================================================
+
+dotnet add package Microsoft.AspNetCore.Authentication.Google
+
+https://console.cloud.google.com/apis/dashboard?project=loginggdotnet-406522
+tạo app -> Oauth nhập tên app ->Credit  chọn Oa nhập url
+
+builder.Services.AddAuthentication()
+    .AddGoogle(googleOptions =>
+    {
+        // Đọc thông tin Authentication:Google từ appsettings.json
+        IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+
+        // Thiết lập ClientID và ClientSecret để truy cập API google
+        googleOptions.ClientId = googleAuthNSection["ClientId"];
+        googleOptions.ClientSecret = googleAuthNSection["ClientSecret"];
+        // Cấu hình Url callback lại từ Google (không thiết lập thì mặc định là /signin-google)
+        googleOptions.CallbackPath = "/dang-nhap-tu-google";
+
+    });
+
 
 
 
@@ -63,3 +84,6 @@ nullableNumber ??= defaultValue;    //nếu nullable bị null          != = nul
 {
     <p>Test Section</p>
 }
+
+
+
