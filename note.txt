@@ -8,13 +8,25 @@ Identily 6 ddi vs verrsion .net 6
 
 src="js     ../assets  thêm chỗ """"
 
+ModelState.AddModeError(string.empty,"sai r")
 
 //===================================================================================================
 Ko scafodder dc controller xoa Microsoft.AspNetCore.Identity di
 //===================================================================================================
+thêm [Authorize] cho class
+
+builder.Services.ConfigureApplicationCookie(opt =>   //ko caanf?
+{
+    opt.LoginPath = "/Identity/Account/Login";
+    opt.LogoutPath = "/Identity/Account/Logout";
+    opt.AccessDeniedPath = "/";
+});
 
 
 
+
+
+//===================================================================================================
 Thêm Iden, download 2 pack, DB:Identity<appuser>
 //đki program
 app.UseAuthentication();  

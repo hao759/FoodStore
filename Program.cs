@@ -1,4 +1,4 @@
-﻿using CuaHangDoAn.Models;
+using CuaHangDoAn.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CuaHangDoAn.Data;
@@ -15,7 +15,12 @@ builder.Services.AddOptions();                                        // Kích h
 //builder.Services.Configure<MailSettings>(mailsettings);               // đăng ký để Inject
 
 builder.Services.AddTransient<IEmailSender, SendMailService>();        // Đăng ký dịch vụ Mail
-
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.LoginPath = "/Identity/Account/Login";
+    opt.LogoutPath = "/Identity/Account/Logout";
+    opt.AccessDeniedPath = "/";
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
