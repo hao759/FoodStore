@@ -85,5 +85,30 @@ nullableNumber ??= defaultValue;    //nếu nullable bị null          != = nul
     <p>Test Section</p>
 }
 
+========================================Fixx================================================
+
+Invalid column name 'Discriminator'.
+
+[NotMapped]
+class PersonViewModel : Person
+{
+    public bool UpdateProfile { get; set; }
+}
 
 
+builder.Services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<CuaHangDoAnContext>();
+
+
+//====================================RoleManager============================================
+InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNet.Identity.RoleManager
+
+    builder.Services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<CuaHangDoAnContext>();
+
+[NotMapped]
+    public class AppRole: IdentityRole
+
+
+        public RoleManager<IdentityRole> _roleManager { get; set; }
+
+        await _roleManager.Roles.ToListAsync();

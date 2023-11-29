@@ -6,6 +6,7 @@ using AspNetCoreHero.ToastNotification;
 using CuaHangDoAn.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Configuration;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,12 +52,13 @@ builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDi
 //    .AddEntityFrameworkStores<CuaHangDoAnContext>();
 
 //builder.Services.AddIdentity<AppUser, IdentityRole>().
-//    AddEntityFrameworkStores<Db>().
+//    AddEntityFrameworkStores<CuaHangDoAnContext>().
 //    AddDefaultTokenProviders();
 
-builder.Services.AddDefaultIdentity<AppUser>().
-    AddEntityFrameworkStores<CuaHangDoAnContext>().
-    AddDefaultTokenProviders();
+builder.Services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<CuaHangDoAnContext>();
+//builder.Services.AddDefaultIdentity<AppUser>().
+//    AddEntityFrameworkStores<CuaHangDoAnContext>().
+//    AddDefaultTokenProviders();
 
 var app = builder.Build();
 
