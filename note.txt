@@ -112,3 +112,6 @@ InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNet.
         public RoleManager<IdentityRole> _roleManager { get; set; }
 
         await _roleManager.Roles.ToListAsync();
+
+
+await   A second operation was started on this context instance before a previous operation completed.
