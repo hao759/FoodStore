@@ -96,8 +96,6 @@ class PersonViewModel : Person
 }
 
 
-builder.Services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<CuaHangDoAnContext>();
-
 
 //====================================RoleManager============================================
 InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNet.Identity.RoleManager
@@ -115,3 +113,12 @@ InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNet.
 
 
 await   A second operation was started on this context instance before a previous operation completed.
+
+=============================================================================================
+
+thíu [Area("Admin")]  ko tìm ra controller
+
+cột data vs title nào dài thắng
+
+
+word-break: break-all;

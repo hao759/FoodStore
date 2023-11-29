@@ -17,6 +17,8 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
         private readonly CuaHangDoAnContext _context;
         public RoleManager<IdentityRole> _roleManager { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; } = "";
         public RoleController(CuaHangDoAnContext context, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -47,6 +49,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
 
                 var newRole = new IdentityRole(appRole.Name);
                 await _roleManager.CreateAsync(newRole);
+                StatusMessage = $"Bạn vừa tạo role mới: {appRole.Name}";
                 return RedirectToAction(nameof(Index));
             }
             return View(appRole);
