@@ -1,0 +1,30 @@
+﻿@model CuaHangDoAn.ModelView.AddRoleMV
+
+
+<!-- Latest compiled and minified JavaScript -->
+
+<form method="post">
+<table class="table table-striped" id="tablee">
+    <thead>
+        <tr>
+            <th>
+                Các Role
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+            <tr>
+                @Html.ListBoxFor(m => m.Roles, new SelectList(ViewBag.SelectlistRole), new { @class = "form-select col-6", 
+                    @multiple = "multiple", @aria_label = "multiple select example" , @size = "3" })
+
+                <td>
+                   
+                </td>
+            </tr>
+    </tbody>
+</table>
+<button type="submit">Lưu</button>
+
+</form>

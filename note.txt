@@ -110,7 +110,7 @@ InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNet.
         public RoleManager<IdentityRole> _roleManager { get; set; }
 
         await _roleManager.Roles.ToListAsync();
-
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
 await   A second operation was started on this context instance before a previous operation completed.
 
@@ -122,3 +122,15 @@ cột data vs title nào dài thắng
 
 
 word-break: break-all;
+
+dùng approle :custom,
+(await _userManager.GetRolesAsync(user)).ToArray;
+
+
+======================ListBoxFor=======================================================
+
+List<string> rolename= await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+            ViewBag.SelectlistRole= rolename;
+
+             @Html.ListBoxFor(m => m.Roles, new SelectList(ViewBag.SelectlistRole), new { @class = "form-select col-6", 
+                    @multiple = "multiple", @aria_label = "multiple select example" , @size = "3" })
