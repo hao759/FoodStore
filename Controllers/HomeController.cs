@@ -70,7 +70,6 @@ namespace CuaHangDoAn.Controllers
                     quantity = 1,
                     product = product
                 };
-
                 cart.Items.Add(itemCart);
             }
             HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart));
@@ -82,6 +81,29 @@ namespace CuaHangDoAn.Controllers
             });
         }
 
+        [HttpPost]
+        public IActionResult DeleteCartItem(int idProduct)
+        {
+            Cart cart = GetCart();
+            try
+            {
+                cart.Items.RemoveAll(s=>s.product.Id==idProduct);
+                HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart));
+                return RedirectToAction("Shoping_Cart");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                RedirectToAction("Index");
+            }
+            return RedirectToAction("Shoping_Cart");
+        }
+
+        public IActionResult Shoping_Cart()
+        {
+            Cart cart = GetCart();
+            return View(cart);
+        }
 
 
     }

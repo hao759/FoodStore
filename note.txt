@@ -9,6 +9,8 @@ Identily 6 ddi vs verrsion .net 6
 src="js     ../assets  thêm chỗ """"
 
 ModelState.AddModeError(string.empty,"sai r")
+@model CuaHangDoAn.ModelView.Cart
+
 
 //===================================================================================================
 Ko scafodder dc controller xoa Microsoft.AspNetCore.Identity di
