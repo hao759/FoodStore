@@ -19,6 +19,9 @@
                 @Html.DisplayNameFor(model => model.CategoryProduct.Name)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Image)
             </th>
             <th></th>
@@ -33,6 +36,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryProduct.Name)
             </td>
+                <td>
+                    @{
+                        var price = item.Price.Value.ToString("#,##0");
+                    }
+                    @Html.DisplayFor(modelItem => price)
+                </td>
                 <td>
                     <img class="mt-4" src="@($"/Image/{item.Image}")" style="width: 200px; height: 130px;" />
                 </td>

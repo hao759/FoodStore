@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CuaHangDoAn.Data;
 using CuaHangDoAn.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CuaHangDoAn.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Roles.Admin)]
     public class CategoryProductsController : Controller
     {
         private readonly CuaHangDoAnContext _context;

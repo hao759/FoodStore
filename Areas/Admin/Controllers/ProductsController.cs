@@ -9,10 +9,12 @@ using CuaHangDoAn.Data;
 using CuaHangDoAn.Models;
 using Microsoft.Extensions.Hosting;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CuaHangDoAn.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly CuaHangDoAnContext _context;
@@ -63,7 +65,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CateID,ImageFile")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,CateID,ImageFile,Price")] Product product)
         {
             ViewData["CateID"] = new SelectList(_context.CategoryProducts, "Id", "Name", product.CateID);
             if (ModelState.IsValid)
@@ -111,7 +113,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CateID,ImageFile,Image")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CateID,ImageFile,Image,Price")] Product product)
         {
             if (id != product.Id)
             {

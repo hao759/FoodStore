@@ -1,6 +1,6 @@
 ﻿@model List<CategoryProduct>
 
-<div class="col-lg-3">
+
     <div class="hero__categories">
         <div class="hero__categories__all">
             <i class="fa fa-bars"></i>
@@ -9,11 +9,11 @@
         <ul>
             @foreach (var item in Model)
             {
-                <li><a href="#">@item.Name</a></li>
+                <li><a asp-action="Category" asp-route-IDCategory="@item.Id">@item.Name</a></li>
             }
            
             <li><a href="~/admin">Qua Admin</a></li>
             
         </ul>
     </div>
-</div>
+
