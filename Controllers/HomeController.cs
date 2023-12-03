@@ -81,6 +81,14 @@ namespace CuaHangDoAn.Controllers
             });
         }
 
+
+        public IActionResult Shoping_Cart()
+        {
+            Cart cart = GetCart();
+            ViewBag.TotalMoney = cart.Items.Sum(s => s.product.Price*s.quantity);
+            return View(cart);
+        }
+
         [HttpPost]
         public IActionResult DeleteCartItem(int idProduct)
         {
@@ -89,20 +97,32 @@ namespace CuaHangDoAn.Controllers
             {
                 cart.Items.RemoveAll(s=>s.product.Id==idProduct);
                 HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart));
-                return RedirectToAction("Shoping_Cart");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 RedirectToAction("Index");
             }
-            return RedirectToAction("Shoping_Cart");
+            //return RedirectToAction("Shoping_Cart");
+            return Json(new
+            {
+                status = "success"
+            });
         }
 
-        public IActionResult Shoping_Cart()
+        [HttpPost]
+        public IActionResult UpdateCartItem(int[] quantity,int[] IdProduct)
         {
             Cart cart = GetCart();
-            return View(cart);
+            for(int i=0; i < quantity.Length; i++)
+            {
+                if (quantity[i]==0)
+                    cart.Items.RemoveAll(s => s.product.Id == IdProduct[i]);
+                else
+                    cart.Items[i].quantity = quantity[i];
+            }
+            HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart));
+            return RedirectToAction("Shoping_Cart");
         }
 
 
