@@ -108,7 +108,7 @@
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a asp-action="DetailProduct" asp-route-IDProduct="@item.Id"><i class="fa fa-info"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a onclick="AddToCart(this)" data-idProduct=@item.Id href="#"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
@@ -418,3 +418,27 @@
         </div>
     </div>
 </section>
+
+@section Scripts{
+    <script>
+        function AddToCart(element){
+            var idProduct = $(element).data("idproduct");
+            $.ajax({
+                url: '/Home/AddProductToCart',
+                datatype: "json",
+                type: "GET",
+                data: {
+                    idProduct: idProduct
+                },
+                //async: true,
+                success: function (data) {
+                    if (data.status == "success")
+                        alert("Thêm thành công")
+                },
+                error: function (xhr) {
+                    alert("Error")
+                }
+            });
+        }
+    </script>
+}

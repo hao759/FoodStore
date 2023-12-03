@@ -60,6 +60,13 @@ builder.Services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>().AddEntit
 //    AddEntityFrameworkStores<CuaHangDoAnContext>().
 //    AddDefaultTokenProviders();
 
+
+builder.Services.AddSession(cfg =>
+{                    // Đăng ký dịch vụ Session
+    cfg.Cookie.Name = "xuanthulab";             // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
+    cfg.IdleTimeout = new TimeSpan(0, 60, 0);    // Thời gian tồn tại của Session
+});
+
 var app = builder.Build();
 
 
@@ -77,7 +84,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseSession();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
