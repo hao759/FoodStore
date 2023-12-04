@@ -125,6 +125,17 @@ namespace CuaHangDoAn.Controllers
             return RedirectToAction("Shoping_Cart");
         }
 
+        public IActionResult Checkout()
+        {
+           
+            return View();
+        }
+        public IActionResult MyProfile()
+        {
+
+            return View();
+        }
+
 
     }
 }

@@ -4,16 +4,14 @@ EntityFrameworkCore.Design
 dotnet add package Microsoft.AspNetCore.Identity
 dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 
-Identily 6 ddi vs verrsion .net 6
-
-src="js     ../assets  thêm chỗ """"
+Identily 6 đi vs verrsion .net 6
 
 ModelState.AddModeError(string.empty,"sai r")
 @model CuaHangDoAn.ModelView.Cart
 
-
 //===================================================================================================
 Ko scafodder dc controller xoa Microsoft.AspNetCore.Identity di
+
 //===================================================================================================
 thêm [Authorize] cho class
 
@@ -46,14 +44,11 @@ builder.Services.AddAuthentication()
 
 
 
-
-
-
-//===================================================================================================
-Thêm Iden, download 2 pack, DB:Identity<appuser>
+//====================================Thêm Iden==================================================
+Download 2 pack, DB:Identity<appuser>
 //đki program
 app.UseAuthentication();  
-builder.Services.AddDefaultIdentity<AppUser>().      //lucs gen ko co nay
+builder.Services.AddDefaultIdentity<AppUser>().      //lúc gen ko co nay
 
 Some services are not able to be constructed		// nó tự sinh ra cái kế thừa identiContext  
 													//.maprazor vào
@@ -62,7 +57,7 @@ Some services are not able to be constructed		// nó tự sinh ra cái kế th�
 
 nullableNumber ??= defaultValue;    //nếu nullable bị null          != = nullableNumber ?? defaultValue
 
-//===================================================================================================
+//===================================DataTable=====================================================
 
    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 
@@ -79,13 +74,6 @@ nullableNumber ??= defaultValue;    //nếu nullable bị null          != = nul
 
 @RenderSection("Script", required: false)
 
-===============================================================================================
-@RenderSection("footer", required: false)
-
-@section footer
-{
-    <p>Test Section</p>
-}
 
 ========================================Fixx================================================
 
@@ -98,20 +86,20 @@ class PersonViewModel : Person
 }
 
 
-
 //====================================RoleManager============================================
 InvalidOperationException: Unable to resolve service for type 'Microsoft.AspNet.Identity.RoleManager
 
-    builder.Services.AddDefaultIdentity<AppUser>().AddRoles<IdentityRole>()
+    builder.Services.AddDefaultIdentity<AppUser>()
+    .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<CuaHangDoAnContext>();
+
 
 [NotMapped]
     public class AppRole: IdentityRole
 
-
         public RoleManager<IdentityRole> _roleManager { get; set; }
 
-        await _roleManager.Roles.ToListAsync();
+
 @model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
 await   A second operation was started on this context instance before a previous operation completed.
@@ -128,11 +116,6 @@ word-break: break-all;
 dùng approle :custom,
 (await _userManager.GetRolesAsync(user)).ToArray;
 
+ko có modelstate.is nó nhảy vô xl luôn
 
-======================ListBoxFor=======================================================
-
-List<string> rolename= await _roleManager.Roles.Select(r => r.Name).ToListAsync();
-            ViewBag.SelectlistRole= rolename;
-
-             @Html.ListBoxFor(m => m.Roles, new SelectList(ViewBag.SelectlistRole), new { @class = "form-select col-6", 
-                    @multiple = "multiple", @aria_label = "multiple select example" , @size = "3" })
+ 2 đứa 1 đứa mt

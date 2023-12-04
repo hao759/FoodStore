@@ -28,5 +28,7 @@ namespace CuaHangDoAn.Models
         public int CateID { get; set; }
         [ForeignKey("CateID")]
         public virtual CategoryProduct? CategoryProduct { get; set; }
+
+        public ICollection<OrderDetails>? OrderDetails { get; set; }
     }
 }
