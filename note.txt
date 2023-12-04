@@ -119,3 +119,5 @@ dùng approle :custom,
 ko có modelstate.is nó nhảy vô xl luôn
 
  2 đứa 1 đứa mt
+
+ userManager.GetUserId(HttpContext.User);

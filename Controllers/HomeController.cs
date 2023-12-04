@@ -7,35 +7,41 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CuaHangDoAn.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        public UserManager<AppUser> userManager { get; set; }
         CuaHangDoAnContext _context;
         public INotyfService _notifyService { get; }
 
         public Cart Cart { get; set; }
-        public HomeController(ILogger<HomeController> logger,CuaHangDoAnContext context, INotyfService notifyService)
+        public HomeController(ILogger<HomeController> logger,CuaHangDoAnContext context, INotyfService notifyService, UserManager<AppUser> userManager)
         {
             _logger = logger;
             _context = context;
             _notifyService = notifyService;
+            this.userManager = userManager;
         }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var listProduct= _context.Products.AsNoTracking().ToList();
             return View(listProduct);
         }
+        [AllowAnonymous]
         public IActionResult DetailProduct(int IDProduct)
         {
             var product = _context.Products.AsNoTracking().FirstOrDefault(s=>s.Id==IDProduct);
             ViewBag.RelateProducts=_context.Products.AsNoTracking().Where(s=>s.CateID== product.CateID && s.Id != IDProduct).ToList();
             return View(product);
         }
-
+        [AllowAnonymous]
         public IActionResult Category(int IDCategory)
         {
             var listProduct = _context.Products.AsNoTracking().Where(s => s.CateID == IDCategory).ToList();
@@ -130,10 +136,18 @@ namespace CuaHangDoAn.Controllers
            
             return View();
         }
-        public IActionResult MyProfile()
+        public  async Task<IActionResult> MyProfile()
         {
-
-            return View();
+            //var user = User.Identity.GetUserId();
+            var user= await userManager.GetUserAsync(HttpContext.User);
+            var profileUser = new InfoModelView
+            {
+                UserName = user.UserName,
+                ID = user.Id,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+            };
+            return View(profileUser);
         }
 
 

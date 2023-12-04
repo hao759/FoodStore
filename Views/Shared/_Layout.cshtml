@@ -45,10 +45,10 @@
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
                 <img src="~/UserAsset/img/language.png" alt="">
-                <div>English</div>
+                <div>English1</div>
                 <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li><a href="#">Spanis</a></li>
+                    <li><a asp-action="MyProfile">Profile</a></li>
                     <li><a href="#">English</a></li>
                 </ul>
             </div>
@@ -109,27 +109,27 @@
                                 <a href="#"><i class="fa fa-linkedin"></i></a>
                                 <a href="#"><i class="fa fa-pinterest-p"></i></a>
                             </div>
-                            <div class="header__top__right__language">
-                                <img src="~/UserAsset/img/language.png" alt="">
-                                <div>English</div>
-                                <span class="arrow_carrot-down"></span>
-                                <ul>
-                                    <li><a href="#">Spanis</a></li>
-                                    <li><a href="#">English</a></li>
-                                </ul>
-                            </div>
-                            <div class="header__top__right__auth">
 
+                            <div class="header__top__right__auth">
 
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <p>Đã đăng nhập : @User.Identity.Name</p>
-                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                                        asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                                        <button type="submit" class="nav-link btn btn-link text-dark">Click here to
-                                            Logout</button>
-                                        <a asp-action="MyProfile">Profile</a>
-                                    </form>
+                                    <div class="header__top__right__language">
+                                        <img src="~/UserAsset/img/language.png" alt="">
+                                        <div>@User.Identity.Name</div>
+                                        <span class="arrow_carrot-down"></span>
+                                        <ul>
+                                            <li><a asp-action="MyProfile"> Profile</a></li>
+                                            <li>
+                                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                                                    asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                                    <button type="submit"
+                                                        class="nav-link btn btn-link text-light">Logout</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+
                                 }
                                 else
                                 {
