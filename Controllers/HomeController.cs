@@ -151,5 +151,30 @@ namespace CuaHangDoAn.Controllers
         }
 
 
+        public async Task<IActionResult> ConfirmOrderAsync()
+        {
+            Cart cart = GetCart();
+            var newOrder = new Order();
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+            newOrder.UserID = user.Id;
+            newOrder.TotalPrice= (decimal)cart.Items.Sum(s => s.product.Price * s.quantity);
+            _context.Add(newOrder);
+            _context.SaveChanges();
+
+            foreach (var item in cart.Items)
+            {
+                var newOrderDetail = new OrderDetails()
+                {
+                    OrderID = newOrder.OrderId,
+                    ProductID = item.product.Id,
+                    quantity = item.quantity,
+                };
+                _context.Add(newOrderDetail);
+            }
+            _context.SaveChanges();
+            HttpContext.Session.Remove("Cart");
+            return RedirectToAction("Index");   
+        }
+
     }
 }

@@ -6,6 +6,10 @@ dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 
 Identily 6 đi vs verrsion .net 6
 
+Static thuộc về class hơn instance
+
+
+
 ModelState.AddModeError(string.empty,"sai r")
 @model CuaHangDoAn.ModelView.Cart
 

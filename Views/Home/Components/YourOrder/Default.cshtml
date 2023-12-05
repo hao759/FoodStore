@@ -1,0 +1,37 @@
+﻿@model CuaHangDoAn.ModelView.Cart
+@{
+    var totalmonney = 0;
+}
+<div class="checkout__order">
+    <h4>Your Order</h4>
+    <div class="checkout__order__products">Products <span>Total</span></div>
+   
+    <ul>
+        @foreach (var item in Model.Items)
+        {
+            int Price = Convert.ToInt32(item.quantity * item.product.Price);
+            totalmonney += Convert.ToInt32(Price);
+            <li>@item.product.Name <span> @(Price.ToString("#,##0")) </span></li>
+        }  
+       
+    </ul>
+    <div class="checkout__order__total">Total : @totalmonney.ToString("#,##0")<span></span></div>
+
+    <div class="checkout__input__checkbox">
+        <label for="payment">
+            Check Payment
+            <input type="checkbox" id="payment">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <div class="checkout__input__checkbox">
+        <label for="paypal">
+            Paypal
+            <input type="checkbox" id="paypal">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <button type="submit" class="site-btn">
+        <a asp-action="ConfirmOrder" >PLACE ORDER</a>
+    </button>
+</div>
