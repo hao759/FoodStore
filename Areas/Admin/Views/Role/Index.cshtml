@@ -1,13 +1,11 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
-@{
-    //Layout = null;
-}
+<h1 class="text-center">Trang quản loại vai trò</h1>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Tạo mới</a>
 </p>
 <partial name="_StatusMessage"></partial>
 <table class="table table-striped" id="tablee">
@@ -27,7 +25,7 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-info " asp-controller="role" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>

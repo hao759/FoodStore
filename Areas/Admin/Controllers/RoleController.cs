@@ -10,6 +10,7 @@ using CuaHangDoAn.Models;
 using Microsoft.AspNetCore.Identity;
 using CuaHangDoAn.ModelView;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace CuaHangDoAn.Areas.Admin.Controllers
 {
@@ -20,14 +21,16 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
         public RoleManager<IdentityRole> _roleManager { get; set; }
 
         public UserManager<AppUser> _userManager { get; private set; }
+        public INotyfService _notifyService { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; } = "";
-        public RoleController(CuaHangDoAnContext context, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        public RoleController(CuaHangDoAnContext context, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, INotyfService notyfService)
         {
             _context = context;
             _roleManager = roleManager;
             _userManager = userManager; 
+            _notifyService= notyfService;
         }
 
         // GET: Admin/Role
@@ -93,9 +96,12 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
 
 
             var resultAdd = await _userManager.AddToRolesAsync(user, addRoles);
+            if(resultAdd.Succeeded)
+            {
+                _notifyService.Success("Chỉnh sửa thành công");
+            }
 
-
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -133,6 +139,42 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        public async Task<IActionResult> Edit(string? id)
+        {
+            var role = await _context.Roles.FindAsync(id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+            return View(role);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, string Name)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var appRole = await _roleManager.FindByIdAsync(id);
+                    appRole.Name = Name;
+                    _context.Update(appRole);
+                    await _context.SaveChangesAsync();
+                    _notifyService.Success("Chỉnh sửa thành công");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                        throw;
+                }
+            }
             return RedirectToAction(nameof(Index));
         }
     }

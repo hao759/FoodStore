@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CuaHangDoAn.Data;
 using CuaHangDoAn.Models;
 using Microsoft.AspNetCore.Authorization;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace CuaHangDoAn.Areas.Admin.Controllers
 {
@@ -16,10 +17,12 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
     public class CategoryProductsController : Controller
     {
         private readonly CuaHangDoAnContext _context;
+        private INotyfService _notifyService;
 
-        public CategoryProductsController(CuaHangDoAnContext context)
+        public CategoryProductsController(CuaHangDoAnContext context, INotyfService notyfService)
         {
             _context = context;
+            _notifyService= notyfService;
         }
 
         // GET: Admin/CategoryProducts
@@ -65,6 +68,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             {
                 _context.Add(categoryProduct);
                 await _context.SaveChangesAsync();
+                _notifyService.Success("Thêm thành công");
                 return RedirectToAction(nameof(Index));
             }
             return View(categoryProduct);
@@ -104,6 +108,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
                 {
                     _context.Update(categoryProduct);
                     await _context.SaveChangesAsync();
+                    _notifyService.Success("Chỉnh sửa thành công");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -155,6 +160,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notifyService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 

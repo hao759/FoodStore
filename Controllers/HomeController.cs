@@ -176,5 +176,12 @@ namespace CuaHangDoAn.Controllers
             return RedirectToAction("Index");   
         }
 
+        public async Task<IActionResult> ListOrder()
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+            var listOrder = _context.Orders.Where(s=>s.UserID==user.Id).ToList();   
+            return View(listOrder);
+        }
+
     }
 }

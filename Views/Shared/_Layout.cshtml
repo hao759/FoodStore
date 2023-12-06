@@ -47,10 +47,10 @@
                 <img src="~/UserAsset/img/language.png" alt="">
                 <div>English1</div>
                 <span class="arrow_carrot-down"></span>
-                <ul>
-                    <li><a asp-action="MyProfile">Profile</a></li>
-                    <li><a href="#">English</a></li>
-                </ul>
+                @*<ul>
+                <li><a asp-action="MyProfile">Profile</a></li>
+                <li><a href="#">English</a></li>
+                </ul>*@
             </div>
             <div class="header__top__right__auth">
                 <a href="#"><i class="fa fa-user"></i> Login</a>
@@ -119,7 +119,10 @@
                                         <div>@User.Identity.Name</div>
                                         <span class="arrow_carrot-down"></span>
                                         <ul>
-                                            <li><a asp-action="MyProfile"> Profile</a></li>
+                                            <li><a asp-action="MyProfile"> MyProfile</a></li>
+                                            <li><a asp-area="Identity" asp-controller="account" asp-action="Manage">
+                                                    Profile</a></li>
+                                            <li><a asp-action="ListOrder"> My Order</a></li>
                                             <li>
                                                 <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
                                                     asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">

@@ -201,6 +201,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notifyService.Success("Xóa sản phẩm thành công");
             return RedirectToAction(nameof(Index));
         }
 
