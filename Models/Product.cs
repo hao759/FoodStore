@@ -30,5 +30,6 @@ namespace CuaHangDoAn.Models
         public virtual CategoryProduct? CategoryProduct { get; set; }
 
         public ICollection<OrderDetails>? OrderDetails { get; set; }
+        public ICollection<ProductsComments>? ProductsComments { get; set; }
     }
 }

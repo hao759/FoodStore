@@ -39,6 +39,27 @@ namespace CuaHangDoAn.Controllers
         {
             var product = _context.Products.AsNoTracking().FirstOrDefault(s=>s.Id==IDProduct);
             ViewBag.RelateProducts=_context.Products.AsNoTracking().Where(s=>s.CateID== product.CateID && s.Id != IDProduct).ToList();
+            //[Comment Feature]
+            ViewBag.ProductID = IDProduct;
+
+            var comments = _context.ProductsComments.Where(d => d.ProductID.Equals(IDProduct)).ToList();
+            ViewBag.Comments = comments;
+            ViewBag.returnUrl = $"/Home/DetailProduct?IDProduct={IDProduct}";
+
+            var ratings = _context.ProductsComments.Where(d => d.ProductID.Equals(IDProduct)).ToList();
+            if (ratings.Count() > 0)
+            {
+                var ratingSum = ratings.Sum(d => d.Rating);
+                ViewBag.RatingSum = ratingSum;
+                var ratingCount = ratings.Count();
+                ViewBag.RatingCount = ratingCount;
+            }
+            else
+            {
+                ViewBag.RatingSum = 0;
+                ViewBag.RatingCount = 0;
+            }
+            //[Comment Feature]
             return View(product);
         }
         [AllowAnonymous]

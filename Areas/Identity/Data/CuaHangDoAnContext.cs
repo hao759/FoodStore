@@ -16,6 +16,7 @@ public class CuaHangDoAnContext : IdentityDbContext<AppUser>
     public DbSet<CategoryProduct> CategoryProducts { get; set; }
     public DbSet<Order>? Orders { get; set; }
     public DbSet<OrderDetails> OrderDetails { get; set; }
+    public DbSet<ProductsComments> ProductsComments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

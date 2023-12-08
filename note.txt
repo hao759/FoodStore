@@ -125,3 +125,10 @@ ko có modelstate.is nó nhảy vô xl luôn
  2 đứa 1 đứa mt
 
  userManager.GetUserId(HttpContext.User);
+
+ //====================================//[Comment Feature]======================================================
+
+ public string Comment { get; set; }
+        public DateTime CreatedDate { get; set; }   
+        public int Rating { get; set; }
+
