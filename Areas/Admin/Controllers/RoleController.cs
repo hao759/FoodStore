@@ -101,7 +101,7 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
                 _notifyService.Success("Chỉnh sửa thành công");
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "user"); 
         }
 
 
@@ -137,7 +137,6 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             {
                 await _roleManager.DeleteAsync(appRole);
             }
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -152,7 +151,6 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
             }
             return View(role);
         }
-
 
 
         [HttpPost]
@@ -171,7 +169,6 @@ namespace CuaHangDoAn.Areas.Admin.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-
                         throw;
                 }
             }
