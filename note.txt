@@ -13,7 +13,518 @@ Static thuộc về class hơn instance
 ModelState.AddModeError(string.empty,"sai r")
 @model CuaHangDoAn.ModelView.Cart
 
-//===================================================================================================
+
+Package Manager Console
+PM> add-migration MyFirstMigration
+
+dotnet ef migrations add InitialCreate2 --context CuaHangDoAnContext
+dotnet ef migrations add Added_something  --verbose   //hiện loi
+
+
+dotnet ef database update --context CuaHangDoAnContext
+
+
+Ko thể tạo DB->  builder add add  -> build
+
+
+
+
+=========add thêm Area============
+
+    Add ->  new Scaffollder item -> add Area
+
+    phủ  app.UseEndpoints(endpoints =>
+        {
+          endpoints.MapControllerRoute(
+            name : "areas",
+            pattern : "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+          );
+        });     vào Program
+
+copy Shared , add controller
+
+
+có 2 Controller Home => [Area("Admin")]
+==============================================================
+
+kéo file phải vào  html để coi cách import
+
+data-setbg="/userAsset   ko có ~  ???
+
+<script src="~/adminasset/js/bootstrap.min.js"></script>
+"../assets     =>       "~/adminasset
+
+
+2   Partial = renderbody
+cắt ra view con để lại <partial> || @Html.Partial("_SidenarPartialView") xong
+
+================================================================
+
+
+source thíu do m chỉ đường dẫn load lên sai
+
+
+.Price.Value.Tostring("#,##0")
+
+
+Lỗi : relational databaseFacade
+try to have all your EF nuget packages on the same version. 
+
+==============================================
+
+ViewBag.CateProduct =new SelectList(_context.CategoryProducts, "Id", "Name");
+
+
+List<SelectListItem> lsTrangthai =new List<SelectListItem>();
+lsTrangthai.Add(new SelectListItem{ Text = "IDnek", Value = "13" });
+
+
+div .col
+<select asp-for="CateID" class="form-select form-control mb-4" asp-items="ViewBag.CateProduct">
+                    <option selected>Chọn loại sản phẩm</option>
+                </select>
+
+
+==============================================
+
+public ICollection<Product>? Products { get; set; }
+
+public int CateID { get; set; } 
+[ForeignKey("CateID")]
+public virtual CategoryProduct? CategoryProduct { get; set; }
+
+================================================Paging====================================================================================
+
+
+dotnet add package PagedList.Core.Mvc
+
+
+@addTagHelper *, PagedList.Core.Mvc
+
+var pageNum=page==null||page<=0 ?1 : page.Value;
+var pageSize = 4;
+var lsCustomer=_context.Products.Include(s=>s.CategoryProduct).AsNoTracking();
+PagedList<Product> models=new PagedList<Product> ( lsCustomer,pageNum,pageSize);
+return View(models);  
+
+
+@model PagedList.Core.IPagedList<Product>
+
+<div aria-label="Page navigation example">
+    <ul class="pagination">
+        <pager class="pager-container" list="@Model" asp-area="Admin" asp-action="Index" asp-controller="Products" />
+    </ul>
+</div>
+
+
+====================================================================================================================================
+
+dotnet add package AspNetCoreHero.ToastNotification
+builder.Services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
+
+//trong Layout
+@await Component.InvokeAsync("Notyf")  //Ngoài layout ms chạy
+
+
+public INotyfService _notifyService { get; }
+public HomeController( INotyfService notifyService)
+{
+    _notifyService = notifyService;
+}
+
+_notifyService.Success("This is a Success Notification");
+
+
+
+@await RenderSectionAsync("Scripts", required: false)//ko cần cho cái này
+@section Scripts{	<script>..<>         }
+
+
+====================================================Session========================================================================
+
+dotnet add package Microsoft.AspNetCore.Session
+dotnet add package Microsoft.Extensions.Caching.Memory    //ko cần?
+
+
+builder.Services.AddDistributedMemoryCache();               //ko cần?
+builder.Services.AddSession(cfg =>
+{                    // Đăng ký dịch vụ Session
+    cfg.Cookie.Name = "xuanthulab";             // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
+    cfg.IdleTimeout = new TimeSpan(0, 60, 0);    // Thời gian tồn tại của Session
+});
+app.UseAuthentication();
+
+
+builder.Services.AddSession//
+app.UseSession(); 
+
+
+HttpContext.Session.SetString("CustomerId", khachhang.customid.tostromg);
+
+
+
+====================================================================================================================================
+
+
+[Remote(action: "Validate", controller: "CategoryProducts", areaName: "Admin")]//AdditionalFields = "Password,RePassword", HttpMethod = "GET"
+
+public IActionResult Validate(string Description){}
+return Json( true);//cho qua
+return Json(data:"Đã sd")
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+
+
+
+===================================ViewComponent===================================================================================
+
+
+[ViewComponent]     kế thừa       ViewComponent hoặc       đuôi  [ViewComponent]
+IViewComponentResult Invoke
+
+ @await Component.InvokeAsync("MenuLoaiSPComponent")
+
+
+ file cshtml trong:
+ /Views/{Controller Name}/Components/{View Component Name}/{View Name}
+/Views/Shared/Components/{View Component Name}/{View Name}
+/Pages/Shared/Components/{View Component Name(tên gọi MenuLoaiSPComponent)}/{View Name (tự đặt)}
+
+
+=====================================================UpImg===============================================================================
+
+
+<input asp-for="ImageFile" accept="image/*" />
+
+ ,Microsoft.AspNetCore.Http.IFormFile)
+
+[NotMapped]
+public IFormFile? ImageFile { get; set; }
+
+string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(product.ImageFile.FileName);
+                string extension = Path.GetExtension(product.ImageFile.FileName);
+                product.Description = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await product.ImageFile.CopyToAsync(fileStream);
+                }
+                //Insert record
+                _context.Add(product);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+
+=======================================================show Img=====================================================================
+
+
+<img class="mt-4" id="blah" src="#" style="width: 200px; height: 130px;" onerror='this.style.display = "none"' />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#ImageFile").change(function () {
+        $("#blah").show()
+        readURL(this);
+    });
+</script>
+
+
+===================================================================================================
+
+
+data-user-id="123"
+var userId = $element.data("user-id");
+
+onclick="addCagetory(this)"
+const _id = element.getAttribute('data-id');
+
+
+
+=====================================================Ajax===========
+ function addCagetory(element) {
+            console.log("ok2")
+            $.ajax({
+                url: 'Home/Findee',
+                datatype: "json",
+                type: "GET",
+                data: {
+                    id: "1"
+                },
+                         success: function (data) {
+                    alert(data.status);
+                },
+            })
+
+        }
+
+
+return Json(new
+            {
+                status="1"
+            });
+
+
+
+
+=======================================Lọc===============
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+
+
+ script để chung 
+
+            $("#txtSearch").keyup(function(){
+            var strkeyword = $('#txtSearch').val();
+            console.log("abc")
+            $.ajax({
+                url: '/Admin/Search/SearchCateProduct',
+                datatype: "json",
+                type: "POST",
+                data: {
+                    keyword: strkeyword
+                },
+                success: function (data) {
+                    console.log(data)
+                    $("#record_table").html("");
+                    $("#record_table").html(data);
+                },
+                //error:function(xhr){
+                //    alert("Error")
+                //}
+            })
+    })
+
+
+
+
+ public IActionResult SearchCateProduct(string keyword)
+        {
+            List<CategoryProduct> ls = new List<CategoryProduct>();
+            
+            if (string.IsNullOrEmpty(keyword) || keyword.Length < 1)
+            {
+                ls=_context.CategoryProducts.ToList();
+                return PartialView("_ListSearchCateProPartial", ls);
+            }
+                
+            ls=_context.CategoryProducts.AsNoTracking().
+                Where(s=>s.Name.Contains(keyword)).ToList();
+            if (ls == null)
+                return PartialView("_ListSearchCateProPartial", null);
+            else
+                return PartialView("_ListSearchCateProPartial", ls);
+        }
+
+
+
+
+
+
+//loc
+
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            jQuery("#test").change(function(){
+                var catID=jQuery(this).children(":selected").attr("value");
+                catID =parseFloat(catID);
+               // $(`#test option`).removeAttr('selected');
+                //$("#test > [value=" +catID +"]").attr("selected","true");
+                $.ajax({
+                    url: '/Admin/CategoryProducts/Filter',
+                datatype: "json",
+                type: "GET",
+                data: {
+                    CatID: catID
+                },
+                async:true,
+                success: function (data) {
+                    if(data.status=="success")
+                        window.location.href=data.redirect;
+                },
+                error:function(xhr){
+                    alert("Error")
+                }
+            });
+            });
+            });
+     </script>
+}
+
+
+
+   public  IActionResult Filter(int CatID =0)
+        {
+            var url = $"/Admin/CategoryProducts?page={CatID}";
+            return Json(new
+            {
+                status = "success",
+                redirect = url
+            });
+        }
+
+
+
+
+      <div  class="col-md-4">
+                 <select id="test" class="form-select form-control mb-4" asp-items="ViewBag.testCateProduct">
+                <option selected>Chọn loại sản phẩm</option>
+            </select>
+   </div>
+
+
+
+
+    <script>
+        $(function(){
+            let searchParams = new URLSearchParams(window.location.search);
+            $("#test > option").each(function() {
+    if(this.value == searchParams.get('page')){
+      this.selected = 'selected';
+    }
+  });
+});
+
+
+
+
+====================================================================================================================================
+
+@Html.ListBoxFor(m => m.SelectedItems, new SelectList(Model.AllItems, "Id", "Name")
+
+SelectedItems = new List<int>(){ 1 }
+
+
+
+
+
+
+public static class SlugUtil
+{
+    public static string Slugify(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            throw new ArgumentNullException("input");
+        }
+
+        var stringBuilder = new StringBuilder();
+        foreach(char c in input.ToArray())
+        {
+            if (Char.IsLetterOrDigit(c))
+            {
+                stringBuilder.Append(c);
+            }
+            else if (c == ' ')
+            {
+                stringBuilder.Append("-");
+            }
+        }
+
+        return stringBuilder.ToString().ToLower();
+    }
+}
+
+
+
+****************************************************************************************************************************************
+
+
+
+
+
+
+@page "/role/Create/{id1?}";
+
+Nắm thư mục kéo ra
+
+
+viewImport            <link> thay vi import bên view
+
+
+https://bootswatch.com/3/paper/         boostrap sẵn
+
+
+summernote
+
+trả PartialView thay vì trả cục html
+
+
+
+
+Nâng cấp:sửa 5->6,upgrade all packet   dotnet add packet ...
+
+
+.Update(SP)
+
+~/Program
+
+GetType instance
+
+
+
+
+dotnet dev-certs https --clean
+dotnet dev-certs https --trust
+
+
+[RegularExpression(@"^[a-z0-9-]*$", ErrorMessage = "Chỉ dùng các ký tự [a-z0-9-]")]
+
+
+
+
+
+
+builder.Services.Configure<RouteOptions>(opt =>
+a?.inv   //nếu a != null
+
+Total => amount.value * ...
+.HasValue
+.Tostring("#,##0")
+
+Session.set<list<cart>>()
+Return Json(new {success = false
+Email=""
+
+new Item{sl=2,..}
+
+GioHang { get {
+	var ....
+	return gh
+		}
+
+
+User.Iden.isauthen
+
+
+String url;.  <Div>.       List a =Viewbag
+
+
+hiden aspfor=thum
+
+
+
+
+
+
+
+
+
+//============================Web3===========================================================
 Ko scafodder dc controller xoa Microsoft.AspNetCore.Identity di
 
 //===================================================================================================
@@ -131,4 +642,44 @@ ko có modelstate.is nó nhảy vô xl luôn
  public string Comment { get; set; }
         public DateTime CreatedDate { get; set; }   
         public int Rating { get; set; }
+
+
+
+
+
+
+
+        public async Task<IActionResult> DangKiTaiKhoan(RegisterVM taikhoan)
+                string RandomKey = Utilities.GetRandomKey();
+                Account tk = new Account() {
+                    UserName = taikhoan.UserName,
+                    Password = (taikhoan.Password + RandomKey.Trim()).ToMD5()
+                };
+                try
+                {
+                    _context.Add(tk);
+                    await _context.SaveChangesAsync();
+                    HttpContext.Session.SetString("CustomerUserName", taikhoan.UserName.ToString());
+                    var taikhoanID = HttpContext.Session.GetString("CustomerUserName");
+
+
+                    //Identity
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, taikhoan.UserName),
+                        new Claim("CustomerUserName",taikhoan.UserName.ToString())
+                    };
+                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "login");
+                    ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    await HttpContext.SignInAsync(claimsPrincipal);
+                    return RedirectToAction("Index", "Home");
+
+
+
+
+==============================================================================
+
+
+
+
 
