@@ -208,30 +208,32 @@ namespace CuaHangDoAn.Controllers
         [HttpGet]
         public async Task<IActionResult> PaymentCallBackAsync()
         {
-
-            Cart cart = GetCart();
-            var newOrder = new Order();
-            AppUser user = await userManager.GetUserAsync(HttpContext.User);
-            newOrder.UserID = user.Id;
-            newOrder.TotalPrice = (decimal)cart.Items.Sum(s => s.product.Price * s.quantity);
-            _context.Add(newOrder);
-            _context.SaveChanges();
-
-            foreach (var item in cart.Items)
-            {
-                var newOrderDetail = new OrderDetails()
-                {
-                    OrderID = newOrder.OrderId,
-                    ProductID = item.product.Id,
-                    quantity = item.quantity,
-                };
-                _context.Add(newOrderDetail);
-            }
-            _context.SaveChanges();
-            HttpContext.Session.Remove("Cart");
-
-
             var response = _momoService.PaymentExecuteAsync(HttpContext.Request.Query);
+            if (HttpContext.Request.Query["errorCode"]=="0")
+            {
+                Cart cart = GetCart();
+                var newOrder = new Order();
+                AppUser user = await userManager.GetUserAsync(HttpContext.User);
+                newOrder.UserID = user.Id;
+                newOrder.TotalPrice = (decimal)cart.Items.Sum(s => s.product.Price * s.quantity);
+                _context.Add(newOrder);
+                _context.SaveChanges();
+
+                foreach (var item in cart.Items)
+                {
+                    var newOrderDetail = new OrderDetails()
+                    {
+                        OrderID = newOrder.OrderId,
+                        ProductID = item.product.Id,
+                        quantity = item.quantity,
+                    };
+                    _context.Add(newOrderDetail);
+                }
+                _context.SaveChanges();
+                HttpContext.Session.Remove("Cart");
+            }
+
+
             return View(response);
         }
     }
