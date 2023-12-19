@@ -15,8 +15,6 @@ namespace CuaHangDoAn.Services
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-
-
             var message = new MimeMessage();
             message.Sender = new MailboxAddress("Gamehay", "qhao74155@gmail.com");
             message.From.Add(new MailboxAddress("Gamehay2", "qhao74155@gmail.com"));

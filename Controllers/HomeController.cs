@@ -9,24 +9,28 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using CuaHangDoAn.Services;
+using CuaHangDoAn.Models.Momo;
 
 namespace CuaHangDoAn.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
+        private IMomoService _momoService;
         private readonly ILogger<HomeController> _logger;
         public UserManager<AppUser> userManager { get; set; }
         CuaHangDoAnContext _context;
         public INotyfService _notifyService { get; }
 
         public Cart Cart { get; set; }
-        public HomeController(ILogger<HomeController> logger,CuaHangDoAnContext context, INotyfService notifyService, UserManager<AppUser> userManager)
+        public HomeController(ILogger<HomeController> logger,CuaHangDoAnContext context, INotyfService notifyService, UserManager<AppUser> userManager, IMomoService momoService)
         {
             _logger = logger;
             _context = context;
             _notifyService = notifyService;
             this.userManager = userManager;
+            _momoService = momoService;
         }
         [AllowAnonymous]
         public IActionResult Index()
@@ -172,13 +176,44 @@ namespace CuaHangDoAn.Controllers
         }
 
 
-        public async Task<IActionResult> ConfirmOrderAsync()
+        //public async Task<IActionResult> ConfirmOrderAsync()
+        //{
+        //    return RedirectToAction("Index");   
+        //}
+
+        public async Task<IActionResult> ListOrder()
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+            var listOrder = _context.Orders.Where(s=>s.UserID==user.Id).ToList();   
+            return View(listOrder);
+        }
+
+
+        //[HttpPost]
+        public async Task<IActionResult> CreatePaymentUrl()
         {
             Cart cart = GetCart();
             var newOrder = new Order();
             AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            Order model= new Order();
+            model.TotalPrice = (decimal)cart.Items.Sum(s => s.product.Price * s.quantity);
+            model.UserID = user.Id;
+            Random rd = new Random();
+            model.OrderId = rd.Next(1, 999999);
+            MomoCreatePaymentResponseModel response = await _momoService.CreatePaymentAsync(model);
+            return Redirect(response.PayUrl);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PaymentCallBackAsync()
+        {
+
+            Cart cart = GetCart();
+            var newOrder = new Order();
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
             newOrder.UserID = user.Id;
-            newOrder.TotalPrice= (decimal)cart.Items.Sum(s => s.product.Price * s.quantity);
+            newOrder.TotalPrice = (decimal)cart.Items.Sum(s => s.product.Price * s.quantity);
             _context.Add(newOrder);
             _context.SaveChanges();
 
@@ -194,15 +229,11 @@ namespace CuaHangDoAn.Controllers
             }
             _context.SaveChanges();
             HttpContext.Session.Remove("Cart");
-            return RedirectToAction("Index");   
-        }
 
-        public async Task<IActionResult> ListOrder()
-        {
-            AppUser user = await userManager.GetUserAsync(HttpContext.User);
-            var listOrder = _context.Orders.Where(s=>s.UserID==user.Id).ToList();   
-            return View(listOrder);
-        }
 
+            var response = _momoService.PaymentExecuteAsync(HttpContext.Request.Query);
+            return View(response);
+        }
     }
+
 }

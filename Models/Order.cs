@@ -8,11 +8,7 @@ namespace CuaHangDoAn.Models
         [Key]
         public int OrderId { get; set; }
 
-
-
-
         public ICollection<OrderDetails>? OrderDetails { get; set; }
-
 
         public decimal TotalPrice { get; set; }
         public string UserID { get; set; }

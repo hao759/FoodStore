@@ -7,6 +7,8 @@ using CuaHangDoAn.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Configuration;
 using System;
+using CuaHangDoAn.Models.Momo;
+using CuaHangDoAn.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,8 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.LogoutPath = "/Identity/Account/Logout";
     opt.AccessDeniedPath = "/";
 });
-
+builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
+builder.Services.AddScoped<IMomoService, MomoService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<CuaHangDoAnContext>(options =>
